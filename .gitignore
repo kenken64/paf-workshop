@@ -1,0 +1,66 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+workshop-day21/day21/node_modules
+workshop-day21/server/node_modules
+workshop-day21/day21/package-lock.json
+workshop-day21/server/package-lock.json
+workshop-day22/day22/node_modules
+workshop-day22/server/node_modules
+workshop-day22/day22/package-lock.json
+workshop-day22/server/package-lock.json
+workshop-day23/day23/node_modules
+workshop-day23/server/node_modules
+workshop-day23/day23/package-lock.json
+workshop-day23/server/package-lock.json
+workshop-day24/day24/node_modules
+workshop-day24/server/node_modules
+workshop-day24/day24/package-lock.json
+workshop-day24/server/package-lock.json
+workshop-day25/day25/node_modules
+workshop-day25/server/node_modules
+workshop-day25/day25/package-lock.json
+workshop-day25/server/package-lock.json
