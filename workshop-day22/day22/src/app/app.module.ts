@@ -3,6 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MaterialModule } from './material.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -10,7 +18,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
