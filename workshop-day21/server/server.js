@@ -18,12 +18,12 @@ const pool = mysql.createPool({
     port: global.env.MYSQL_PORT,
     user: global.env.MYSQL_USERNAME,
     password: global.env.MYSQL_PASSWORD,
-    database: global.env.MYSQL_DATABASE,
+    database: global.env.MYSQL_SCHEMA,
     connectionLimit: global.env.MYSQL_CONNECTION
 });
 console.log(pool);
 
-const queryAllRsvp = "SELECT id, name, email, phone, status, createdBy, createdDt, updatedBy, updatedDt FROM rsvp";
+const queryAllRsvp = "SELECT id, name, email, phone, status, createdBy, createdDt, updatedBy, updatedDt FROM rsvp order by createdDt desc";
 const insertRsvp = "INSERT INTO rsvp (name, email, phone, status, createdBy, createdDt ) VALUES (? ,? ,?, ?, ?, CURDATE())";
 
 
@@ -49,7 +49,7 @@ const findAllRsvp = makeQuery(queryAllRsvp, pool);
 const saveRsvp = makeQuery(insertRsvp, pool);
 
 
-app.get("/api/rsvp", (req, res)=> {
+app.get("/api/rsvps", (req, res)=> {
     findAllRsvp([])
         .then((results)=> {
             for (let r of results)
@@ -62,7 +62,7 @@ app.get("/api/rsvp", (req, res)=> {
         });
 });
 
-app.post("/api/rsvp", (req, res) => {
+app.post("/api/rsvps", (req, res) => {
     console.log(req.body);
     saveRsvp([req.body.name, req.body.email ,req.body.phone, req.body.status, 1])
         .then(function (result) {
