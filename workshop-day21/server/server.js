@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json({limit: '50mb'}));
 
-global.env = secureEnv({secret:'itssecret'});
+global.env = secureEnv({secret:'isasecret'});
 const APP_PORT = global.env.APP_PORT;
 
 const pool = mysql.createPool({
