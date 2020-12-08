@@ -10,7 +10,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class OrderService {
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 
+      'Content-Type': 'application/json',  
+      'Accept': 'application/json'})
   };
   
   constructor(private http: HttpClient) { }
