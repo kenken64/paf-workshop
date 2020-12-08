@@ -35,7 +35,7 @@ const makeQuery = (sql, pool) =>  {
             return results[0];
         }catch(err){
             console.log(err);
-            return Promise.reject(e);
+            return Promise.reject(err);
         } finally {
             conn.release();
         }
@@ -52,8 +52,8 @@ const startApp = async (app, pool) => {
 			console.info(`Application started on port ${APP_PORT} at ${new Date()}`)
 		})
 	} catch(e) {
-		console.error('Cannot ping database', e)
-	} finally {
+        console.error('Cannot ping database', e);
+    } finally {
 		conn.release()
 	}
 }
@@ -68,7 +68,16 @@ app.get("/order/total/:orderId", (req, res)=> {
         .then((results)=> {
             for (let r of results)
                 console.log(r.id)
-            res.status(200).json(results);
+            res.format({ 
+                html: function () { 
+                    console.log("html");
+                    res.send(results); 
+                }, 
+                json: function () {
+                    console.log("json");
+                    res.status(200).json(results);
+                } 
+            }); 
         })
         .catch((err) => {
             console.log(err);
