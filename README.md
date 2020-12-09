@@ -144,4 +144,20 @@ create view compute_orders as
 
 ## Workshop Day 24
 
+1. AWS S3 config
+
+```
+[default]
+region=sfo2
+output=json
+```
+
+2. AWS S3 credentials
+
+```
+[default]
+aws_access_key_id=
+aws_secret_access_key=
+```
+
 ## Workshop Day 25
