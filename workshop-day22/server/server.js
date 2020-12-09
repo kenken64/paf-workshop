@@ -18,7 +18,7 @@ const pool = mysql.createPool({
     port: global.env.MYSQL_PORT,
     user: global.env.MYSQL_USERNAME,
     password: global.env.MYSQL_PASSWORD,
-    database: global.env.MYSQL_SCHEMA,
+    database: global.env.MYSQL_DATABASE,
     connectionLimit: global.env.MYSQL_CONNECTION
 });
 
@@ -68,26 +68,29 @@ app.get("/order/total/:orderId", (req, res)=> {
         .then((results)=> {
             for (let r of results)
                 console.log(r.id)
-            res.format({ 
-                html: function () { 
-                    console.log("html");
-                    res.send(results); 
-                }, 
-                json: function () {
-                    console.log("json");
-                    res.status(200).json(results);
-                } 
-            }); 
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).end();
+
+            console.log(results.length);
+            if(results.length > 0){
+                res.format({ 
+                    html: function () { 
+                        console.log("html");
+                        res.send(results); 
+                    }, 
+                    json: function () {
+                        console.log("json");
+                        res.status(200).json(results);
+                    } 
+                }); 
+            }else{
+                throw new Error('No record !');  
+            }
+        }).catch((err) => {
+            res.status(500).json({err: err.message});
         });
 });
 
 app.use((req, resp) => {
 	resp.redirect('/')
 })
-
 
 startApp(app, pool);
