@@ -15,10 +15,6 @@ export class OrderService {
       'Accept': 'application/json'})
   };
 
-  headers : HttpHeaders = new HttpHeaders({ 
-    'Content-Type': 'application/json',  
-    'Accept': 'application/json'});
-  
   constructor(private http: HttpClient) { }
 
   getOrderCountDetails(orderId: string): Observable<OrderCount[]> {
