@@ -14,11 +14,15 @@ export class OrderService {
       'Content-Type': 'application/json',  
       'Accept': 'application/json'})
   };
+
+  headers : HttpHeaders = new HttpHeaders({ 
+    'Content-Type': 'application/json',  
+    'Accept': 'application/json'});
   
   constructor(private http: HttpClient) { }
 
   getOrderCountDetails(orderId: string): Observable<OrderCount[]> {
-    return this.http.get<OrderCount[]>(`${environment.apiUrl}${orderId}`, httpOptions)
+    return this.http.get<OrderCount[]>(`${environment.apiUrl}${orderId}`, this.httpOptions)
       .pipe(
         tap(_ => console.log('fetched getOrderCountDetails')),
         catchError(this.handleError<OrderCount[]>('getOrderCountDetails', []))
