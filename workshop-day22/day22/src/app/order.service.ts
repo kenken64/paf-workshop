@@ -18,7 +18,7 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   getOrderCountDetails(orderId: string): Observable<OrderCount[]> {
-    return this.http.get<OrderCount[]>(`${environment.apiUrl}${orderId}`)
+    return this.http.get<OrderCount[]>(`${environment.apiUrl}${orderId}`, httpOptions)
       .pipe(
         tap(_ => console.log('fetched getOrderCountDetails')),
         catchError(this.handleError<OrderCount[]>('getOrderCountDetails', []))
