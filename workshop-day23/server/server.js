@@ -25,32 +25,33 @@ const pool = mysql.createPool({
 const startApp = async (app, pool) => {
 	const conn = await pool.getConnection()
 	try {
-		console.info('Pinging database...')
-		await conn.ping()
+		console.info('Pinging database...');
+		await conn.ping();
 		app.listen(APP_PORT, () => {
-			console.info(`Application started on port ${APP_PORT} at ${new Date()}`)
-		})
+			console.info(`Application started on port ${APP_PORT} at ${new Date()}`);
+		});
 	} catch(e) {
         console.error('Cannot ping database', e);
     } finally {
-		conn.release()
+		conn.release();
 	}
 }
 
-const insertOrders= async(employeeId, customerId, productId)=>{
+const insertOrders= async(employeeId, customerId, productId, res)=>{
     const conn = await pool.getConnection();
     try{
         await conn.beginTransaction();
         console.log(employeeId);
         console.log(customerId);
         console.log(productId);
-        let orderResult = await conn.query(`INSERT INTO ORDERS_wkshp23 
+        let orderResult = await conn.query(`INSERT INTO ORDERS 
             (EMPLOYEE_id, CUSTOMER_id) values (?,?)`, [employeeId,customerId]);
         console.log(orderResult[0].insertId);
-        let orderDetailsResult = await conn.query(`INSERT INTO ORDER_DETAILS_wrkshp23 
+        let orderDetailsResult = await conn.query(`INSERT INTO ORDER_DETAILS 
             (order_id, product_id) values (?,?)`, [orderResult[0].insertId,productId]);
         console.log(orderDetailsResult[0]);
         await conn.commit();
+        res.status(200).json({order: orderResult[0], details: orderDetailsResult[0]});
     }catch(e){
         conn.rollback();
         res.status(500).json({err: e.message});
@@ -63,11 +64,7 @@ app.post("/order", (req, res)=> {
     const employeeId = req.body.employeeId;
     const customerId = req.body.customerId;
     const productId = req.body.productId;
-    if(productId == '22'){
-        productId = NULL;
-    }
-    insertOrders(employeeId, customerId, productId);
-    res.status(200).json({});
+    insertResult = insertOrders(employeeId, customerId, productId, res);
 });
 
 app.use((req, resp) => {

@@ -66,6 +66,7 @@ workshop-day24/day24/node_modules
 workshop-day24/server/node_modules
 workshop-day24/server/.env
 workshop-day24/server/.env.enc
+workshop-day24/server/config.json
 workshop-day24/day24/package-lock.json
 workshop-day24/server/package-lock.json
 workshop-day25/day25/node_modules
