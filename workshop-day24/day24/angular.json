@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "day24"
+  "defaultProject": "day24",
+  "cli": {
+    "analytics": false
+  }
 }
