@@ -49,11 +49,14 @@ const upload = multer({
 app.post('/upload', (request, response, next)=> {
     upload(request, response, (error)=> {
         if (error) {
-        console.log(error);
-        return response.redirect("/error");
+          console.log(error);
+          response.status(500).json({error: error.message});
         }
         console.log('File uploaded successfully.');
-        response.status(200).json({message: "uploaded"});
+        response.status(200).json({
+          message: "uploaded",
+          s3_file_key: response.req.file.location
+        });
     });
 });
 
