@@ -31,13 +31,12 @@ const upload = multer({
       bucket: AWS_S3_BUCKET_NAME,
       acl: 'public-read',
       metadata: function (req, file, cb) {
-        console.log(req.headers['content-length']);
         cb(null, {
             fieldName: file.fieldname,
             originalFileName: file.originalname,
             uploadTimeStamp: new Date().toString(),
-            uploader: req.body.uploader,
-            note: req.body.note
+            uploader: req.body.uploader? req.body.uploader: req.query.uploader,
+            note: req.body.note ? req.body.note: req.query.note
         });
       },
       key: function (request, file, cb) {
@@ -45,7 +44,7 @@ const upload = multer({
         cb(null, new Date().getTime()+'_'+ file.originalname);
       }
     })
-  }).array('upload', 1);
+  }).single('upload');
 
 app.post('/upload', (request, response, next)=> {
     upload(request, response, (error)=> {
@@ -62,7 +61,7 @@ async function downloadFromS3(params, res){
     const metaData = await s3.headObject(params).promise();
     console.log(metaData);
     res.set({
-        'X-Original-Name': metaData.Metadata.originalFileName,
+        'X-Original-Name': metaData.Metadata.originalfilename,
         'X-Create-Time': metaData.Metadata.uploadtimestamp,
         'X-Uploader': metaData.Metadata.uploader,
         'X-Notes': metaData.Metadata.note
