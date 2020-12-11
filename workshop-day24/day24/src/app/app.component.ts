@@ -35,6 +35,7 @@ export class AppComponent implements OnInit{
     this.http.post(`${this.apiUrl}/upload`, formData)
       .toPromise()
       .then((result)=>{
+        console.log(result['s3_file_key']);
         this.uploadImg = result['s3_file_key'];
       }).catch((error)=>{
         console.log(error);
