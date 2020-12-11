@@ -48,7 +48,6 @@ const upload = multer({
   }).array('uploads', 10);
 
 app.post('/upload', (request, response, next)=> {
-    
     upload(request, response, (error)=> {
         if (error) {
           console.log(error);
