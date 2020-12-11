@@ -42,20 +42,30 @@ const upload = multer({
       key: function (request, file, cb) {
         console.log(file);
         cb(null, new Date().getTime()+'_'+ file.originalname);
-      }
+      },
+      limits: { fileSize: 20000000 },
     })
-  }).single('upload');
+  }).array('uploads', 10);
 
 app.post('/upload', (request, response, next)=> {
+    
     upload(request, response, (error)=> {
         if (error) {
           console.log(error);
           response.status(500).json({error: error.message});
         }
         console.log('File uploaded successfully.');
+        let fileArray = request.files,
+            fileLocation;
+        const images = [];
+        for (let i = 0; i < fileArray.length; i++) {
+            fileLocation = fileArray[i].location;
+            console.log('filenm', fileLocation);
+            images.push(fileLocation)
+        }
         response.status(200).json({
           message: "uploaded",
-          s3_file_key: response.req.file.location
+          s3_file_key: images
         });
     });
 });

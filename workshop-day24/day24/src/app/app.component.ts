@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
   });
 
   uploadImg:any;
+  uploadImgArrUrls = [];
 
   constructor(private http: HttpClient){
   }
@@ -29,16 +30,31 @@ export class AppComponent implements OnInit{
 
   upload(){
     const formData = new FormData();
+    const numberOfFiles = this.imageFile.nativeElement.files.length;
+    console.log(numberOfFiles);
     formData.set('uploader', this.form.get('uploader').value);
     formData.set('note', this.form.get('note').value);
-    formData.set('upload', this.imageFile.nativeElement.files[0]);
-    this.http.post(`${this.apiUrl}/upload`, formData)
+    formData.set('uploadcount', numberOfFiles);
+    for(let i =0; i < this.imageFile.nativeElement.files.length; i++){
+      formData.append('uploads', this.imageFile.nativeElement.files[i]);
+    }
+    
+    if(numberOfFiles <= 10){
+      this.http.post(`${this.apiUrl}/upload`, formData)
       .toPromise()
       .then((result)=>{
         console.log(result['s3_file_key']);
         this.uploadImg = result['s3_file_key'];
+        this.uploadImg.forEach((element)=>{
+          console.log(element);
+          this.uploadImgArrUrls.push(element);
+        });
       }).catch((error)=>{
         console.log(error);
       });
+    }else{
+      console.log('Only allow to upload max 10 files')
+    }
+    
   }
 }
