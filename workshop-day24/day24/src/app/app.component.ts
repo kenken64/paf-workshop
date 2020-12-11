@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
@@ -20,12 +21,25 @@ export class AppComponent implements OnInit{
 
   uploadImg:any;
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient,
+    private sanitizer: DomSanitizer
+    ){
   }
 
   ngOnInit(){
 
   }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+       this.uploadImg = reader.result;
+    }, false);
+ 
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+ }
 
   upload(){
     const formData = new FormData();
@@ -35,7 +49,15 @@ export class AppComponent implements OnInit{
     this.http.post(`${this.apiUrl}/upload`, formData)
       .toPromise()
       .then((result)=>{
-        this.uploadImg = result['s3_file_key'];
+        this.http.get(`${this.apiUrl}/blob/${result['file_key']}`, 
+          {responseType: "blob"})
+          .toPromise()
+          .then((resultfromBlob)=> {
+            let objectURL = URL.createObjectURL(resultfromBlob);       
+            this.uploadImg = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          }).catch((error)=>{
+            console.log(error);
+          });
       }).catch((error)=>{
         console.log(error);
       });

@@ -29,7 +29,7 @@ const upload = multer({
     storage: multerS3({
       s3: s3,
       bucket: AWS_S3_BUCKET_NAME,
-      acl: 'public-read',
+      acl: 'private',
       metadata: function (req, file, cb) {
         cb(null, {
             fieldName: file.fieldname,
@@ -55,6 +55,7 @@ app.post('/upload', (request, response, next)=> {
         console.log('File uploaded successfully.');
         response.status(200).json({
           message: "uploaded",
+          file_key: response.req.file.key,
           s3_file_key: response.req.file.location
         });
     });
@@ -71,8 +72,7 @@ async function downloadFromS3(params, res){
       })
     s3.getObject(params, function(err, data) {
         if (err) console.log(err, err.stack);
-        let fileData= data.Body.toString('utf-8');
-        res.send(fileData);
+        res.send(data.Body);
     });
 }
 

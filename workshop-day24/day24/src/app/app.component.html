@@ -1,7 +1,7 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="upload()">
     <label>Image: </label>
-    <input type="file" accept="image/*" formControlName="image-file" #imageFile>
+    <input type="file" accept="image/jpeg" formControlName="image-file" #imageFile>
     <label>Note: </label>
     <input type="text" formControlName="note">
     <label>Uploader: </label>
