@@ -35,7 +35,7 @@ export class AppComponent implements OnInit{
     formData.set('uploader', this.form.get('uploader').value);
     formData.set('note', this.form.get('note').value);
     formData.set('uploadcount', numberOfFiles);
-    for(let i =0; i < this.imageFile.nativeElement.files.length; i++){
+    for(let i =0; i < numberOfFiles; i++){
       formData.append('uploads', this.imageFile.nativeElement.files[i]);
     }
     
