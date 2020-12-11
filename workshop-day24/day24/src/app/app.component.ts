@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
       formData.append('uploads', this.imageFile.nativeElement.files[i]);
     }
     
-    if(numberOfFiles <= 10){
+    if(numberOfFiles > 0 || numberOfFiles <= 10){
       this.http.post(`${this.apiUrl}/upload`, formData)
       .toPromise()
       .then((result)=>{
@@ -53,7 +53,8 @@ export class AppComponent implements OnInit{
         console.log(error);
       });
     }else{
-      console.log('Only allow to upload max 10 files')
+      console.log('Only allow to upload more than 1 file');
+      console.log('Only allow to upload max 10 files');
     }
     
   }

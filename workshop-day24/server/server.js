@@ -55,7 +55,7 @@ app.post('/upload', (request, response, next)=> {
           response.status(500).json({error: error.message});
         }
         console.log('File uploaded successfully.');
-        let fileArray = request.files,
+        let fileArray = response.req.files,
             fileLocation;
         const images = [];
         for (let i = 0; i < fileArray.length; i++) {
